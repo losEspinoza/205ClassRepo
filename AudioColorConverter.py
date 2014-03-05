@@ -38,11 +38,15 @@ class RGB:
 # Values Global
 #
 
+
+
 myImg  = pickAFile()          # get a file from user
 myImg  = makePicture(myImg)   # take file path and turn into picture
 
 width  = getWidth(myImg)      # size of width of image selected
 height = getHeight(myImg)     # size of height of image selected
+
+mynewpic = makeEmptyPicture(640,480,white) # make blank canvas.
 
 
 wt = makeColor(255, 255, 255 )    #make list of colors for comparison
@@ -100,13 +104,53 @@ def compare(pixColor, color_list):
     
     if closest > thisFar:
       closet = thisFar
-      color  = color_list[x] 
+      color  = color_list[x]
 
   return color
 
 #  
 # END compare()
 ###############################################################
+
+
+
+
+###############################################################
+# Image resizeing
+# resize()
+
+# NOTES: do a proportional avarage of RGB from a specified area, make it one pixel.
+# 
+# calculate, make new blank image and start inserting compiled data.
+
+#640 width
+#480 height 
+
+
+def resize():
+  
+  mynewpic = makeEmptyPicture(640,480,white) # make blank canvas.
+  
+  global width
+  global height
+  
+  getcontext().prec = 3
+  
+  pixlesX = Decimal(width)/Decimal(640)   # number of pixles to analyse across
+  pixlesY = Decimal(height)/Decimal(480)  # number of pixles to analyse down
+  
+  
+  
+  printNow(width)
+  printNow(height)
+  printNow(pixlesX)
+  printNow(pixlesY)
+  
+
+#
+# END Image resizing
+###############################################################
+
 
 
 
@@ -147,6 +191,7 @@ def compareRGB(pixColor, cList):
   
   return color
 
+#
 # END compareRGB()
 ###############################################################
 
@@ -163,12 +208,22 @@ for i in range (0, width):          # iterate from top to bottom of image
     makeItThisColor = compareRGB(pix, cList)       # call new compare 
     setColor(pix, makeItThisColor)                 # set new color
 
-
+resize()
 show(myImg)    #show picture
 
 #
 # end MAIN
 ###############################################################
+
+
+
+###############################################################
+#
+# NOTES
+
+
+# resize idea
+# take original, resize, then color swap.
 
 
 # 0. show before
