@@ -5,17 +5,14 @@
 #Description:
 
 
-#from jarray import array      # import array function
-
-myImg  = pickAFile()          #get a file from user
-myImg  = makePicture(myImg)   #take file path and turn into picture
-
-width  = getWidth(myImg)
-height = getHeight(myImg)
 
 
 
-##########################################################
+###############################################################
+# RGB - will store RGB values for comparisons. 0-255 range
+# It will store RED value, GREEN value, BLUE value.
+# It will return said information.
+#
 class RGB:
 
   def __init__(self, newR, newG, newB):
@@ -32,13 +29,23 @@ class RGB:
       
   def myBlue(self):
     return self.B
-    
-#end OBJECT
-#########################################################
+#    
+#end RGB CLASS
+###############################################################
 
 
-#make list of colors for comparison
-wt = makeColor(255, 255, 255)
+###############################################################
+# Values Global
+#
+
+myImg  = pickAFile()          # get a file from user
+myImg  = makePicture(myImg)   # take file path and turn into picture
+
+width  = getWidth(myImg)      # size of width of image selected
+height = getHeight(myImg)     # size of height of image selected
+
+
+wt = makeColor(255, 255, 255 )    #make list of colors for comparison
 bk = makeColor(0,   0,   0)
 rd = makeColor(255, 0,   0)
 og = makeColor(255, 165, 0)
@@ -47,11 +54,12 @@ gr = makeColor(0,   255, 0)
 bl = makeColor(0,   0,   255)
 vi = makeColor(143, 0,   255)
 
-
 # take and sort list by value, look at jeremys email to get values.
 color_list = [rd, og, yl, gr, bl, vi, wt, bk]
 
 
+
+# make list of color data objects "RGB", RGB values. 0-255 value range
 wtL = RGB(255, 255, 255)
 bkL = RGB(0,   0,   0)
 rdL = RGB(255, 0,   0)
@@ -61,12 +69,14 @@ grL = RGB(0,   255, 0)
 blL = RGB(0,   0,   255)
 viL = RGB(143, 0,   255)
 
+# push to a list for iteration.
 cList = [rdL, ogL, ylL, grL, blL, viL, wtL, bkL]
 
+#
+# END values
+###############################################################
 
 
-
-maxDiff = 0
 
 ###############################################################
 # compare()
@@ -74,6 +84,8 @@ maxDiff = 0
 # check pixle that is passed in
 # find the closest color in our color list
 # return the color in our list
+# First algorithem for color selection. Not acurate enough.
+# 
 def compare(pixColor, color_list):
 
   closest = 200 #200 works best thus far
@@ -91,7 +103,8 @@ def compare(pixColor, color_list):
       color  = color_list[x] 
 
   return color
-  
+
+#  
 # END compare()
 ###############################################################
 
@@ -104,17 +117,15 @@ def compare(pixColor, color_list):
 
 def compareRGB(pixColor, cList):
 
-  newSum = 9000 # similar value 200 to start with.
+  newSum = 9000 # Start large and swap with lowest value, iteravely.
   oldSum = newSum
   color = white
-  global maxDiff
   
   # Get RGB values of pixle
   pcR = getRed  (pixColor)
   pcG = getGreen(pixColor)
   pcB = getBlue (pixColor)
   
-  size = len(cList)
   
   for x in cList:
     
@@ -122,7 +133,6 @@ def compareRGB(pixColor, cList):
     clR = x.myRed()
     clG = x.myGreen()
     clB = x.myBlue()
-
     
     # Absolute value for comparison.   
     difR = math.fabs(clR-pcR)
@@ -131,39 +141,34 @@ def compareRGB(pixColor, cList):
     
     newSum = difR + difG + difB
     
-    
-    if newSum > oldSum:
-      maxDiff = newSum
-    
-    
     if oldSum > newSum:
       oldSum = newSum
-      color  = makeColor(clR, clG, clB)
-  
+      color  = makeColor(clR, clG, clB)  
   
   return color
-
-
-
-
 
 # END compareRGB()
 ###############################################################
 
 
+###############################################################
+# MAIN
+#
 for i in range (0, width):          # iterate from top to bottom of image
   for j in range (0, height):       # iterate from left to right of image
     pix   = getPixel (myImg,i,j)    
     myCol = getColor (pix)
     
     #makeItThisColor = compare(myCol, color_list)  # call compare to get color
-    makeItThisColor = compareRGB(pix, cList)  # call new compare 
-    setColor(pix, makeItThisColor)                # set new color
+    makeItThisColor = compareRGB(pix, cList)       # call new compare 
+    setColor(pix, makeItThisColor)                 # set new color
 
-printNow(maxDiff)
 
 show(myImg)    #show picture
 
+#
+# end MAIN
+###############################################################
 
 
 # 0. show before
