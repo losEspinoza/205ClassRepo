@@ -43,6 +43,8 @@ class RGB:
 myImg  = pickAFile()          # get a file from user
 myImg  = makePicture(myImg)   # take file path and turn into picture
 
+myPath = myImg                # original file path, used to make a modified copy
+
 width  = getWidth(myImg)      # size of width of image selected
 height = getHeight(myImg)     # size of height of image selected
 
@@ -134,7 +136,7 @@ def resize():
   global width
   global height
   
-  getcontext().prec = 3
+  #getcontext().prec = 3
   
   pixlesX = Decimal(width)/Decimal(640)   # number of pixles to analyse across
   pixlesY = Decimal(height)/Decimal(480)  # number of pixles to analyse down
@@ -208,8 +210,14 @@ for i in range (0, width):          # iterate from top to bottom of image
     makeItThisColor = compareRGB(pix, cList)       # call new compare 
     setColor(pix, makeItThisColor)                 # set new color
 
-resize()
+# resize()
 show(myImg)    #show picture
+
+
+newFileName = requestString("Name new file")
+filePath    = pickAFolder()
+
+writePictureTo(myImg,filePath+newFileName+".jpg")
 
 #
 # end MAIN
