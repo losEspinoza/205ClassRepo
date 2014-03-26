@@ -1,8 +1,14 @@
 #Program:  paintMIDI image converter
 #Name:     Carlos Espinoza
-#Date:     
+#Date:     March 26 2014
 #
-#Description:
+#Description:  Program will take any .jpg file and convert the colors,
+#              pixle by pixle, to a range of specified colors, then
+#              ask the user for a name to apply to the modified image
+#              and folder in which to save the file, and save.
+#
+#              The colors are intended for use with Jeremy's paintMIDI
+#              program.
 
 
 
@@ -13,6 +19,7 @@
 # It will store RED value, GREEN value, BLUE value.
 # It will return said information.
 #
+
 class RGB:
 
   def __init__(self, newR, newG, newB):
@@ -38,22 +45,20 @@ class RGB:
 # Values Global
 #
 
-
-
 myImg  = pickAFile()          # get a file from user
-myImg  = makePicture(myImg)   # take file path and turn into picture
+myPic  = makePicture(myImg)   # take file path and turn into picture
 
 myPath = myImg                # original file path, used to make a modified copy
 
-width  = getWidth(myImg)      # size of width of image selected
-height = getHeight(myImg)     # size of height of image selected
+width  = getWidth(myPic)      # size of width of image selected
+height = getHeight(myPic)     # size of height of image selected
 
 mynewpic = makeEmptyPicture(640,480,white) # make blank canvas.
 
 
-wt = makeColor(255, 255, 255 )    #make list of colors for comparison
+wt = makeColor(255, 255, 255)     #make list of colors for comparison
 bk = makeColor(0,   0,   0)
-rd = makeColor(255, 0,   0)
+rd = makeColor(255, 0,   0)        # 256?? for proper red
 og = makeColor(255, 165, 0)
 yl = makeColor(255, 255, 0)
 gr = makeColor(0,   255, 0)
@@ -91,11 +96,11 @@ cList = [rdL, ogL, ylL, grL, blL, viL, wtL, bkL]
 # find the closest color in our color list
 # return the color in our list
 # First algorithem for color selection. Not acurate enough.
-# 
+
 def compare(pixColor, color_list):
 
   closest = 200 #200 works best thus far
-  color = white
+  color = makeColor(255, 255, 255)
   global maxDiff
   
   size = len(color_list)
@@ -117,17 +122,36 @@ def compare(pixColor, color_list):
 
 
 
+
+###############################################################
+# saveMyFile()
+# File saving function. Input name, and select folder to save to
+
+def saveMyFile():
+
+  global myPic
+  
+  newFileName = requestString("Name new file") # Request name for file naming
+  filePath    = pickAFolder()                  # Select the folder to save to
+
+  writePictureTo(myPic,filePath+newFileName+".jpg") # Save file
+
+# END saveMyFile()
+###############################################################
+
+
+
+
 ###############################################################
 # Image resizeing
 # resize()
-
+#
 # NOTES: do a proportional avarage of RGB from a specified area, make it one pixel.
-# 
-# calculate, make new blank image and start inserting compiled data.
-
-#640 width
-#480 height 
-
+#        Not functioning. 
+#
+# calculate, make new blank image and start inserting selected pixles data.
+#  640 width
+#  480 height 
 
 def resize():
   
@@ -139,16 +163,13 @@ def resize():
   #getcontext().prec = 3
   
   pixlesX = Decimal(width)/Decimal(640)   # number of pixles to analyse across
-  pixlesY = Decimal(height)/Decimal(480)  # number of pixles to analyse down
-  
-  
+  pixlesY = Decimal(height)/Decimal(480)  # number of pixles to analyse down  
   
   printNow(width)
   printNow(height)
   printNow(pixlesX)
   printNow(pixlesY)
   
-
 #
 # END Image resizing
 ###############################################################
@@ -159,7 +180,8 @@ def resize():
 ###############################################################
 # compareRGB()
 # compare the R G B separately to select the closest color
-# similar to top, but made my own algorithm
+# in the list. 
+# This is better than the compare() function
 
 def compareRGB(pixColor, cList):
 
@@ -198,12 +220,14 @@ def compareRGB(pixColor, cList):
 ###############################################################
 
 
+
+
 ###############################################################
 # MAIN
 #
 for i in range (0, width):          # iterate from top to bottom of image
   for j in range (0, height):       # iterate from left to right of image
-    pix   = getPixel (myImg,i,j)    
+    pix   = getPixel (myPic,i,j)    
     myCol = getColor (pix)
     
     #makeItThisColor = compare(myCol, color_list)  # call compare to get color
@@ -211,13 +235,13 @@ for i in range (0, width):          # iterate from top to bottom of image
     setColor(pix, makeItThisColor)                 # set new color
 
 # resize()
-show(myImg)    #show picture
+
+# show(myPic)    #show picture
+
+saveMyFile()
 
 
-newFileName = requestString("Name new file")
-filePath    = pickAFolder()
 
-writePictureTo(myImg,filePath+newFileName+".jpg")
 
 #
 # end MAIN
