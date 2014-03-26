@@ -234,13 +234,10 @@ for i in range (0, width):          # iterate from top to bottom of image
     makeItThisColor = compareRGB(pix, cList)       # call new compare 
     setColor(pix, makeItThisColor)                 # set new color
 
-# resize()
+# resize()       # Still in development
+# show(myPic)    # show picture
 
-# show(myPic)    #show picture
-
-saveMyFile()
-
-
+saveMyFile()     # call save file function.
 
 
 #
