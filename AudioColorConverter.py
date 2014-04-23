@@ -12,8 +12,6 @@
 
 
 
-
-
 ###############################################################
 # RGB - will store RGB values for comparisons. 0-255 range
 # It will store RED value, GREEN value, BLUE value.
@@ -39,6 +37,8 @@ class RGB:
 #    
 #end RGB CLASS
 ###############################################################
+
+
 
 
 ###############################################################
@@ -86,6 +86,7 @@ cList = [rdL, ogL, ylL, grL, blL, viL, wtL, bkL]
 #
 # END values
 ###############################################################
+
 
 
 
@@ -225,17 +226,19 @@ def compareRGB(pixColor, cList):
 ###############################################################
 # MAIN
 #
+
 for i in range (0, width):          # iterate from top to bottom of image
   for j in range (0, height):       # iterate from left to right of image
     pix   = getPixel (myPic,i,j)    
     myCol = getColor (pix)
     
     #makeItThisColor = compare(myCol, color_list)  # call compare to get color
-    makeItThisColor = compareRGB(pix, cList)       # call new compare 
+    makeItThisColor = compareRGB(pix, cList)       # call new compare function, its better!
     setColor(pix, makeItThisColor)                 # set new color
 
 # resize()       # Still in development
-# show(myPic)    # show picture
+
+show(myPic)    # show picture
 
 saveMyFile()     # call save file function.
 
@@ -243,6 +246,7 @@ saveMyFile()     # call save file function.
 #
 # end MAIN
 ###############################################################
+
 
 
 
